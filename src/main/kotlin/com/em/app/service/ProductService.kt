@@ -1,36 +1,29 @@
-package com.em.managesProducts.controller
+package com.em.app.service
 
-import com.em.managesProducts.model.Product
-import com.em.managesProducts.repository.ProductRepository
+import com.em.app.model.Product
+import com.em.app.repository.ProductRepository
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.*
-import javax.validation.Valid
+import org.springframework.stereotype.Service
 
-@RestController
-@RequestMapping("/api")
-class ProductController(private val productRepository: ProductRepository) {
+@Service
+class ProductService(private val productRepository: ProductRepository) {
 
-    @GetMapping("/products")
-    fun getAllProducts(): List<Product> = productRepository.findAll()
+    fun getAllProduct(): MutableIterable<Product> {
+        return productRepository.findAll();
+    }
 
-
-    @PostMapping("/products")
-    fun createNewProduct(@Valid @RequestBody product: Product): Product =
-            productRepository.save(product)
-
-
-    @GetMapping("/products/{id}")
-    fun getProductById(@PathVariable(value = "id") productId: Long): ResponseEntity<Product> {
+    fun getOneProduct(productId: Long): ResponseEntity<Product> {
         return productRepository.findById(productId).map { product ->
             ResponseEntity.ok(product)
         }.orElse(ResponseEntity.notFound().build())
     }
 
-    @PutMapping("/products/{id}")
-    fun updateProductById(@PathVariable(value = "id") productId: Long,
-                          @Valid @RequestBody newProduct: Product): ResponseEntity<Product> {
+    fun saveProduct(product: Product): Product {
+        return productRepository.save(product)
+    }
 
+    fun updateProduct(productId: Long, newProduct: Product): ResponseEntity<Product> {
         return productRepository.findById(productId).map {
             val updatedProduct: Product =
                     it.copy(
@@ -45,14 +38,11 @@ class ProductController(private val productRepository: ProductRepository) {
         }.orElse(ResponseEntity.notFound().build())
     }
 
-
-    @DeleteMapping("/products/{id}")
-    fun deleteProductById(@PathVariable(value = "id") productId: Long): ResponseEntity<Void> {
-
+    fun deleteProduct(productId: Long): ResponseEntity<Void> {
         return productRepository.findById(productId).map { product ->
             productRepository.delete(product)
             ResponseEntity<Void>(HttpStatus.OK)
         }.orElse(ResponseEntity.notFound().build())
-
     }
+
 }
