@@ -1,18 +1,21 @@
 package com.em.managesProducts.model
 
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
-import javax.validation.constraints.NotEmpty
+import javax.persistence.*
+import javax.validation.constraints.NotBlank
 
 @Entity
 data class Product(
         @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-        val id: Long = 0,
-        val  title : String = "",
-        val  subtitle : String = "",
-        val price : Double = 0.0,
-        val description : String = "",
-        val ratings : Int  = 0,
-        val images : String = "")
+        val id: Long,
+        @NotBlank
+        val title: String,
+        @NotBlank
+        val subtitle: String,
+        @NotBlank
+        val price: Double,
+        @NotBlank
+        val description: String,
+        @NotBlank
+        val ratings: Int,
+        @OneToMany(mappedBy = "product", cascade = [CascadeType.ALL])
+        val images: List<Image>)
