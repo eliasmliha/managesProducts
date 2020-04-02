@@ -18,4 +18,5 @@ data class Product(
         @NotBlank
         val ratings: Int,
         @OneToMany(cascade = [CascadeType.ALL])
-        val images: List<Image>)
+        var images: List<Image> = emptyList()
+)

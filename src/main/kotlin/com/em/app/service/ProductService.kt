@@ -2,6 +2,7 @@ package com.em.app.service
 
 import com.em.app.model.Product
 import com.em.app.repository.ProductRepository
+import javassist.NotFoundException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
@@ -13,17 +14,18 @@ class ProductService(private val productRepository: ProductRepository) {
         return productRepository.findAll();
     }
 
-    fun getOneProduct(productId: Long): ResponseEntity<Product> {
-        return productRepository.findById(productId).map { product ->
-            ResponseEntity.ok(product)
-        }.orElse(ResponseEntity.notFound().build())
+    fun getOneProduct(productId: Long): Product? {
+        return productRepository.findById(productId).map { it }.orElse(null)
+                ?: throw NotFoundException("Product $productId does not exist")
     }
 
     fun saveProduct(product: Product): Product {
         return productRepository.save(product)
     }
 
-    fun updateProduct(productId: Long, newProduct: Product): ResponseEntity<Product> {
+
+
+    fun updateProduct(productId: Long, newProduct: Product): Product {
         return productRepository.findById(productId).map {
             val updatedProduct: Product =
                     it.copy(
@@ -34,15 +36,15 @@ class ProductService(private val productRepository: ProductRepository) {
                             ratings = newProduct.ratings,
                             images = newProduct.images
                     )
-            ResponseEntity.ok().body(productRepository.save(updatedProduct))
-        }.orElse(ResponseEntity.notFound().build())
+            productRepository.save(updatedProduct)
+        }.orElse(null) ?: throw NotFoundException("Product $productId does not exist")
     }
 
-    fun deleteProduct(productId: Long): ResponseEntity<Void> {
-        return productRepository.findById(productId).map { product ->
-            productRepository.delete(product)
-            ResponseEntity<Void>(HttpStatus.OK)
-        }.orElse(ResponseEntity.notFound().build())
+
+    fun deleteProduct(productId: Long) {
+        return productRepository.findById(productId).map {
+            productRepository.delete(it)
+        }.orElse(null) ?: throw NotFoundException("Product $productId does not exist")
     }
 
 }

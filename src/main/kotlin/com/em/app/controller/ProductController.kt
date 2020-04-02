@@ -21,18 +21,19 @@ class ProductController(private val productService: ProductService) {
     }
 
     @GetMapping("/{id}")
-    fun getProductById(@PathVariable(value = "id") productId: Long): ResponseEntity<Product> {
-        return productService.getOneProduct(productId)
+    fun getProductById(@PathVariable(value = "id") productId: Long): ResponseEntity<Product>? {
+        return productService.getOneProduct(productId)?.let { ResponseEntity.ok(it) }
     }
+
 
     @PutMapping("/{id}")
     fun updateProductById(@PathVariable(value = "id") productId: Long,
-                          @Valid @RequestBody newProduct: Product): ResponseEntity<Product> {
-        return productService.updateProduct(productId, newProduct)
+                          @Valid @RequestBody newProduct: Product): ResponseEntity<Product>? {
+        return productService.updateProduct(productId, newProduct).let { ResponseEntity.ok(it) }
     }
 
     @DeleteMapping("/{id}")
-    fun deleteProductById(@PathVariable(value = "id") productId: Long): ResponseEntity<Void> {
-        return productService.deleteProduct(productId)
+    fun deleteProductById(@PathVariable(value = "id") productId: Long): ResponseEntity.BodyBuilder {
+        return productService.deleteProduct(productId).let { ResponseEntity.ok() }
     }
 }
