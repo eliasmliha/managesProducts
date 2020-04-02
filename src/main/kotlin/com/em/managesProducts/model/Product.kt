@@ -17,5 +17,5 @@ data class Product(
         val description: String,
         @NotBlank
         val ratings: Int,
-        @OneToMany(mappedBy = "product", cascade = [CascadeType.ALL])
+        @OneToMany(cascade = [CascadeType.ALL])
         val images: List<Image>)

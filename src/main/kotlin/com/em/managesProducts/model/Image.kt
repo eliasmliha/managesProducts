@@ -9,6 +9,6 @@ data class Image(
         val id: Long,
         @NotBlank
         val url: String,
-        @ManyToOne
+        @ManyToOne(fetch = FetchType.EAGER)
         val product: Product
 )
