@@ -10,12 +10,15 @@ data class Product(
         @NotBlank
         val title: String,
         @NotBlank
+        @Column(columnDefinition = "TEXT")
         val subtitle: String,
         @NotBlank
         val price: Double,
         @NotBlank
+        @Column(columnDefinition = "TEXT")
         val description: String,
         @NotBlank
         val ratings: Int,
         @OneToMany(cascade = [CascadeType.ALL])
-        val images: List<Image>)
+        var images: List<Image> = emptyList()
+)

@@ -8,7 +8,8 @@ data class Image(
         @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
         val id: Long,
         @NotBlank
+        @Column(columnDefinition = "TEXT")
         val url: String,
         @ManyToOne(fetch = FetchType.EAGER)
-        val product: Product
+        val product: Product? = null
 )
