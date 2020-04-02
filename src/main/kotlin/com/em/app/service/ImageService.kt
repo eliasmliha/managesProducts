@@ -3,7 +3,9 @@ package com.em.app.service
 import com.em.app.model.Image
 import com.em.app.repository.ImageRepository
 import javassist.NotFoundException
+import org.springframework.stereotype.Service
 
+@Service
 class ImageService(private val imageRepository: ImageRepository) {
 
 
