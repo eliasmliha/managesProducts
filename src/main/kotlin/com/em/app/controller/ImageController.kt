@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
 @RestController
-@RequestMapping("/images")
+@RequestMapping("image")
 class ImageController(private val imageService: ImageService) {
     @GetMapping()
-    fun getAllImages(): MutableIterable<Image> {
+    fun getAllImages(): MutableIterable<Image?> {
         return imageService.getAllImage()
     }
 
@@ -27,7 +27,7 @@ class ImageController(private val imageService: ImageService) {
 
     @PutMapping("/{id}")
     fun updateImageById(@PathVariable(value = "id") imageId: Long,
-                          @Valid @RequestBody newImage: Image): ResponseEntity<Image>? {
+                        @Valid @RequestBody newImage: Image): ResponseEntity<Image>? {
         return imageService.updateImage(imageId, newImage).let { ResponseEntity.ok(it) }
     }
 

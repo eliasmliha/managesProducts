@@ -10,7 +10,7 @@ class ImageService(private val imageRepository: ImageRepository) {
 
 
     fun getAllImage(): MutableIterable<Image> {
-        return imageRepository.findAll();
+        return imageRepository.findAll()
     }
 
     fun getOneImage(imageId: Long): Image? {
@@ -28,8 +28,8 @@ class ImageService(private val imageRepository: ImageRepository) {
         return imageRepository.findById(imageId).map {
             val updatedImage: Image =
                     it.copy(
-                            url = newImage.url,
-                            product = newImage.product
+                            url = newImage.url
+//                            product = newImage.product
                     )
             imageRepository.save(updatedImage)
         }.orElse(null) ?: throw NotFoundException("Image $imageId does not exist")

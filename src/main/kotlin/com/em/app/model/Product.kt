@@ -1,5 +1,7 @@
 package com.em.app.model
 
+import com.fasterxml.jackson.annotation.JsonBackReference
+import com.fasterxml.jackson.annotation.JsonManagedReference
 import javax.persistence.*
 import javax.validation.constraints.NotBlank
 
@@ -10,13 +12,16 @@ data class Product(
         @NotBlank
         val title: String,
         @NotBlank
+        @Column(columnDefinition = "TEXT")
         val subtitle: String,
         @NotBlank
         val price: Double,
         @NotBlank
+        @Column(columnDefinition = "TEXT")
         val description: String,
         @NotBlank
         val ratings: Int,
-        @OneToMany(cascade = [CascadeType.ALL])
-        var images: List<Image> = emptyList()
+        @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+        @JsonManagedReference
+        var images: MutableList<Image?> = mutableListOf()
 )

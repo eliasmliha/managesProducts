@@ -2,17 +2,19 @@ package com.em.app.controller
 
 import com.em.app.model.Product
 import com.em.app.service.ProductService
+import org.springframework.data.domain.Pageable
+import org.springframework.data.repository.PagingAndSortingRepository
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
 @RestController
-@RequestMapping("/products")
+@RequestMapping("product")
 class ProductController(private val productService: ProductService) {
 
     @GetMapping()
-    fun getAllProducts(): MutableIterable<Product> {
-        return productService.getAllProduct()
+    fun getAllProducts(pageable: Pageable): MutableIterable<Product> {
+        return productService.getAllProduct(pageable)
     }
 
     @PostMapping()

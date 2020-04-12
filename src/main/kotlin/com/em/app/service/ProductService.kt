@@ -3,15 +3,17 @@ package com.em.app.service
 import com.em.app.model.Product
 import com.em.app.repository.ProductRepository
 import javassist.NotFoundException
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
+
 import org.springframework.stereotype.Service
 
 @Service
 class ProductService(private val productRepository: ProductRepository) {
 
-    fun getAllProduct(): MutableIterable<Product> {
-        return productRepository.findAll();
+
+    fun getAllProduct(pageable: Pageable): Page<Product> {
+        return productRepository.findAll(pageable)
     }
 
     fun getOneProduct(productId: Long): Product? {
@@ -22,7 +24,6 @@ class ProductService(private val productRepository: ProductRepository) {
     fun saveProduct(product: Product): Product {
         return productRepository.save(product)
     }
-
 
 
     fun updateProduct(productId: Long, newProduct: Product): Product {

@@ -10,4 +10,3 @@ class ManagesProductsApplication
 fun main(args: Array<String>) {
     runApplication<ManagesProductsApplication>(*args)
 }
-
