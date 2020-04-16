@@ -3,10 +3,14 @@ package com.em.app
 import com.em.app.model.*
 import com.em.app.repository.*
 import org.springframework.boot.CommandLineRunner
+import org.springframework.context.annotation.Bean
+import org.springframework.data.rest.core.config.RepositoryRestConfiguration
+import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
-import javax.transaction.Transactional
+import java.awt.print.Book
 import kotlin.random.Random
+
 
 @Component
 class FakeDataGenerator(val productRepository: ProductRepository,
@@ -14,10 +18,19 @@ class FakeDataGenerator(val productRepository: ProductRepository,
                         val accountRepository: AccountRepository,
                         val roleRepository: RoleRepository,
                         val privilegeRepository: PrivilegeRepository,
-                        val passwordEncoder: PasswordEncoder) : CommandLineRunner {
+                        val passwordEncoder: PasswordEncoder,
+                        val restConfiguration: RepositoryRestConfiguration) : CommandLineRunner {
 
 
     override fun run(vararg args: String?) {
+
+        restConfiguration.exposeIdsFor(
+                Product::class.java,
+                Image::class.java,
+                Account::class.java,
+                Role::class.java,
+                Privilege::class.java
+        )
 
         val readPrivilege: Privilege = createPrivilegeIfNotFound("READ_PRIVILEGE")
         val writePrivilege: Privilege = createPrivilegeIfNotFound("WRITE_PRIVILEGE")
@@ -58,6 +71,7 @@ class FakeDataGenerator(val productRepository: ProductRepository,
                 imageRepository.save(Image(0, "https://picsum.photos/${Random.nextInt(1, 100)}/237/200/300", product))
             }
         }
+
     }
 
     private fun createPrivilegeIfNotFound(name: String): Privilege {
@@ -80,4 +94,6 @@ class FakeDataGenerator(val productRepository: ProductRepository,
         return accountRepository.save(account)
 
     }
+
+
 }

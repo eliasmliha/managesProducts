@@ -11,6 +11,6 @@ data class Privilege(val name: String = "") {
     val id: Int? = null
 
     @ManyToMany(mappedBy = "privileges")
-    @JsonBackReference
+//    @JsonBackReference
     var roles: MutableList<Role>? = mutableListOf()
 }

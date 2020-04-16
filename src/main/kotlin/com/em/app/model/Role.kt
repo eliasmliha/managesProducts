@@ -18,7 +18,7 @@ data class Role(@Column(unique = true) val roleName: String) {
     val id: Int? = null
 
     @ManyToMany(mappedBy = "roles")
-    @JsonBackReference
+//    @JsonBackReference
     var accounts: MutableList<Account>? = null
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -26,16 +26,14 @@ data class Role(@Column(unique = true) val roleName: String) {
             name = "roles_privileges",
             joinColumns = [JoinColumn(name = "role_id", referencedColumnName = "id")],
             inverseJoinColumns = [JoinColumn(name = "privilege_id", referencedColumnName = "id")])
-    @JsonManagedReference
+//    @JsonManagedReference
     var privileges: MutableSet<Privilege>? = mutableSetOf()
 
-//    fun getGrantedPermission(): MutableList<SimpleGrantedAuthority>? {
+//    @Transient
+//    fun getGrantedPermission(): MutableSet<GrantedAuthority> {
 //        val authority: MutableSet<GrantedAuthority> = mutableSetOf()
-//        for (privilege in privileges!!) {
-//            authority.add(SimpleGrantedAuthority(privilege.name))
-//        }
-//
-//        return privileges?.stream()?.map { SimpleGrantedAuthority(it.name) }?.collect(Collectors.toList())
+//        privileges!!.forEach { authority.add(SimpleGrantedAuthority(it.name)) }
+//        return authority
 //    }
 
 }

@@ -11,7 +11,11 @@ spring:
     hibernate:
       ddl-auto: create-drop
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
 server:
   servlet:
     context-path: /api
+
+
+
 

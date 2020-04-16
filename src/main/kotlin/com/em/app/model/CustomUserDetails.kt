@@ -36,13 +36,15 @@ open class CustomUserDetails(user: Account) : Account(user), UserDetails {
     }
 
 
-    fun getGrantedAuthorises(): Collection<GrantedAuthority> {
+    private fun getGrantedAuthorises(): Collection<GrantedAuthority> {
         val authority: MutableSet<GrantedAuthority> = mutableSetOf()
-        for (role in roles) {
-            authority.add(SimpleGrantedAuthority(role?.roleName))
-            role?.privileges?.forEach { authority.add(SimpleGrantedAuthority(it.name)) }
-//            role?.getGrantedPermission()?.let { authority.addAll(it) }
+        roles.forEach {
+            authority.add(SimpleGrantedAuthority(it?.roleName))
+            it?.privileges?.forEach { authority.add(SimpleGrantedAuthority(it.name)) }
         }
         return authority
     }
+
+
+
 }

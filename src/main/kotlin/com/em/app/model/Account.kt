@@ -26,7 +26,7 @@ open class Account(var firstName: String = "",
             name = "accounts_roles",
             joinColumns = [JoinColumn(name = "account_id", referencedColumnName = "id")],
             inverseJoinColumns = [JoinColumn(name = "role_id", referencedColumnName = "id")])
-    @JsonManagedReference
+//    @JsonManagedReference
     var roles: MutableSet<Role?> = mutableSetOf()
 
 
@@ -46,13 +46,10 @@ open class Account(var firstName: String = "",
     }
 
 
+//    @Transient
 //    fun getGrantedAuthorises(): Collection<GrantedAuthority> {
 //        val authority: MutableSet<GrantedAuthority> = mutableSetOf()
-//        for (role in roles) {
-//            authority.add(SimpleGrantedAuthority(role?.roleName))
-//            role?.privileges?.forEach { authority.add(SimpleGrantedAuthority(it.name))}
-////            role?.getGrantedPermission()?.let { authority.addAll(it) }
-//        }
+//        roles.forEach { it?.getGrantedPermission()?.let { authority.addAll(it) } }
 //        return authority
 //    }
 
